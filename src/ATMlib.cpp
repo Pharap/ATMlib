@@ -212,8 +212,10 @@ void ATM_playroutine() {
         vf += (ch->volFreSlide);
         if (!(ch->volFreConfig & 0x80)) {
           if (vf < 0) vf = 0;
-          else if (ch->volFreConfig & 0x40) if (vf > 9397) vf = 9397;
-            else if (!(ch->volFreConfig & 0x40)) if (vf > 63) vf = 63;
+          else if (ch->volFreConfig & 0x40) {
+            if (vf > 9397) vf = 9397;
+          }
+          else if (vf > 63) vf = 63;
         }
         (ch->volFreConfig & 0x40) ? ch->freq = vf : ch->vol = vf;
       }
@@ -244,8 +246,10 @@ void ATM_playroutine() {
       int16_t vt = ((ch->treviConfig & 0x40) ? ch->freq : ch->vol);
       vt = (ch->treviCount & 0x80) ? (vt + ch->treviDepth) : (vt - ch->treviDepth);
       if (vt < 0) vt = 0;
-      else if (ch->treviConfig & 0x40) if (vt > 9397) vt = 9397;
-        else if (!(ch->treviConfig & 0x40)) if (vt > 63) vt = 63;
+      else if (ch->treviConfig & 0x40) {
+        if (vt > 9397) vt = 9397;
+      }
+      else if (vt > 63) vt = 63;
       (ch->treviConfig & 0x40) ? ch->freq = vt : ch->vol = vt;
       if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F)) ch->treviCount++;
       else {
